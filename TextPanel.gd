@@ -1,0 +1,2 @@
+extends TextWidget
+class_name TextPanel
