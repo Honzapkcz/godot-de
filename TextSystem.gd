@@ -87,6 +87,10 @@ func _ready():
 		win.fg_color = randi_range(0, 15)
 		win.terminal = term
 		term.windows.append(win)
+	var win: = TextPanel.new()
+	win.rect = Rect2(19, 45, 40, 4)
+	win.terminal = term
+	term.windows.append(win)
 	# DEBUG #
 
 func _draw():
