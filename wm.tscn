@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://be1xwc865alt5"]
+
+[ext_resource type="Script" path="res://TextSystem.gd" id="1_teklm"]
+[ext_resource type="Shader" path="res://cursor.gdshader" id="3_u7dgt"]
+[ext_resource type="Texture2D" uid="uid://cll5rw08jfact" path="res://cursor.png" id="4_axay3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_65j4j"]
+shader = ExtResource("3_u7dgt")
+
+[node name="Beach" type="Node2D"]
+script = ExtResource("1_teklm")
+
+[node name="Cursor" type="Sprite2D" parent="."]
+editor_description = "This is bad idea."
+material = SubResource("ShaderMaterial_65j4j")
+texture = ExtResource("4_axay3")
+offset = Vector2(4, 7)
