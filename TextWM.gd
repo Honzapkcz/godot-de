@@ -1,10 +1,9 @@
 extends TextBuffer
 class_name TextWM
 
+var j: int
 @export var width: int = 8
 @export var height: int = 8
-var ix: int
-var iy: int
 var font: RID
 var canvas: RID
 var canvas_item: RID
@@ -37,19 +36,20 @@ func post_init() -> void:
 
 # TODO: need to fix this somehow
 func _draw() -> void:
-	_iy = 0
+	j = 0
 	RenderingServer.canvas_item_clear(canvas_item)
-	while _iy < LINES:
-		_ix = 0
-		while _ix < COLS:
+	while j < LINES:
+		i = 0
+		while i < COLS:
 			#draw_rect(Rect2(ix * width, iy * height, width, height), pallete[(buffer[(iy * COLS + ix) * 2 + 1] & 0b11110000) >> 4])
-			RenderingServer.canvas_item_add_rect(canvas_item, Rect2(_ix * width, _iy * height, width, height), pallete[(buffer[(_iy * COLS + _ix) * 2 + 1] & 0b11110000) >> 4])
-			if buffer[(_iy * COLS + _ix) * 2]:
+			RenderingServer.canvas_item_add_rect(canvas_item, Rect2(i * width, j * height, width, height), pallete[(buffer[(j * COLS + i) * 2 + 1] & 0b11110000) >> 4])
+			if buffer[(j * COLS + i) * 2]:
 				#draw_char(font, Vector2(ix * width, iy * height + height / 2), char(buffer[(iy * COLS + ix) * 2]), size, pallete[buffer[(iy * COLS + ix) * 2 + 1] & 0b00001111])
-				#RenderingServer.canvas_item_add_circle(canvas_item, Vector2(_ix * width + 4, _iy * height + 4), buffer[(_iy * COLS + _ix) * 2] / 32, pallete[buffer[(_iy * COLS + _ix) * 2 + 1] & 0b00001111])
-				RenderingServer.canvas_item_add_texture_rect_region(canvas_item, Rect2(_ix * width, _iy * height, width, height), font, Rect2(buffer[(_iy * COLS + _ix) * 2] % 16 * width, int(buffer[(_iy * COLS + _ix) * 2] / 16) * height, width, height))
-			_ix += 1
-		_iy += 1
+				#RenderingServer.canvas_item_add_circle(canvas_item, Vector2(_ix * width + 4, j * height + 4), buffer[(j * COLS + _ix) * 2] / 32, pallete[buffer[(j * COLS + _ix) * 2 + 1] & 0b00001111])
+				RenderingServer.canvas_item_add_texture_rect_region(canvas_item, Rect2(i * width, j * height, width, height), font, Rect2(buffer[(j * COLS + i) * 2] % 16 * width,
+					int(buffer[(j * COLS + i) * 2] / 16) * height, width, height), pallete[buffer[(j * COLS + i) * 2 + 1] & 0b00001111])
+			i += 1
+		j += 1
 
 func _process(delta):
 	move(0, 0)

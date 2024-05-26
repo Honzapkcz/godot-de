@@ -25,18 +25,25 @@ class_name TextBuffer
 		buffer.resize(COLS * LINES * 2)
 
 class BorderChars:
+	## Left Side Character Index
 	var ls: int
+	## Right Side Character Index
 	var rs: int
+	## Top Side Character Index
 	var ts: int
+	## Bottom Side Character Index
 	var bs: int
+	## Top Left Character Index
 	var tl: int
+	## Top Right Character Index
 	var tr: int
+	## Bottom Left Character Index
 	var bl: int
+	## Bottom Right Character Index
 	var br: int
 
 var buffer: = PackedByteArray()
-var _ix: int
-var _iy: int
+var i: int
 var cur: Vector2i
 var fgc: int
 var bgc: int
@@ -58,9 +65,11 @@ func attron(fg: int, bg: int) -> void:
 func addchstr(str: PackedByteArray, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
-	for i in len(str):
+	i = len(str) - 1
+	while i >= 0:
 		buffer[(cur.y * COLS + cur.x + i) * 2] = str[i]
 		buffer[(cur.y * COLS + cur.x + i) * 2 + 1] = fg | bg << 4
+		i -= 1
 
 func hline(ch: int, n: int, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
@@ -83,29 +92,24 @@ func vline(ch: int, n: int, fg: int = -1, bg: int = -1) -> void:
 func border(chs: BorderChars, h: int, v: int, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
-	_ix = h
-	while _ix > 0:
-		buffer[(cur.y * COLS + cur.x + _ix) * 2] = chs.ts
-		buffer[(cur.y * COLS + cur.x + _ix) * 2 + 1] = fg | bg << 4
-		_ix -= 1
 	
-	_ix = h
-	while _ix > 0:
-		buffer[((cur.y + v) * COLS + cur.x + _ix) * 2] = chs.bs
-		buffer[((cur.y + v) * COLS + cur.x + _ix) * 2 + 1] = fg | bg << 4
-		_ix -= 1
+	i = h
+	while i > 0:
+		buffer[(cur.y * COLS + cur.x + i) * 2] = chs.ts
+		buffer[(cur.y * COLS + cur.x + i) * 2 + 1] = fg | bg << 4
+		
+		buffer[((cur.y + v) * COLS + cur.x + i) * 2] = chs.bs
+		buffer[((cur.y + v) * COLS + cur.x + i) * 2 + 1] = fg | bg << 4
+		i -= 1
 	
-	_iy = v
-	while _iy > 0:
-		buffer[((cur.y + _iy) * COLS + cur.x) * 2] = chs.ls
-		buffer[((cur.y + _iy) * COLS + cur.x) * 2 + 1] = fg | bg << 4
-		_iy -= 1
-	
-	_iy = v
-	while _iy > 0:
-		buffer[((cur.y + _iy) * COLS + cur.x + h) * 2] = chs.rs
-		buffer[((cur.y + _iy) * COLS + cur.x + h) * 2 + 1] = fg | bg << 4
-		_iy -= 1
+	i = v
+	while i > 0:
+		buffer[((cur.y + i) * COLS + cur.x) * 2] = chs.ls
+		buffer[((cur.y + i) * COLS + cur.x) * 2 + 1] = fg | bg << 4
+		
+		buffer[((cur.y + i) * COLS + cur.x + h) * 2] = chs.rs
+		buffer[((cur.y + i) * COLS + cur.x + h) * 2 + 1] = fg | bg << 4
+		i -= 1
 	
 	buffer[(cur.y * COLS + cur.x) * 2] = chs.tl
 	buffer[(cur.y * COLS + cur.x) * 2 + 1] = fg | bg << 4
@@ -123,32 +127,32 @@ func rect(ch: int, h: int, v: int, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
 	while v >= 0:
-		_ix = h
-		while _ix >= 0:
-			buffer.set(((cur.y + v) * COLS + cur.x + _ix) * 2, ch)
-			buffer.set(((cur.y + v) * COLS + cur.x + _ix) * 2 + 1, fg | bg << 4)
-			_ix -= 1
+		i = h
+		while i >= 0:
+			buffer.set(((cur.y + v) * COLS + cur.x + i) * 2, ch)
+			buffer.set(((cur.y + v) * COLS + cur.x + i) * 2 + 1, fg | bg << 4)
+			i -= 1
 		v -= 1
 
 func clear(ch: int = 0x00, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
 	buffer.fill(fg | bg << 4)
-	_ix = buffer.size() - 2
-	while _ix > 0:
-		buffer.set(_ix, ch)
-		_ix -= 2
+	i = buffer.size() - 2
+	while i > 0:
+		buffer.set(i, ch)
+		i -= 2
 	buffer.set(0, ch)
 
 func attrset(h: int, v: int, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
 	while v > 0:
-		_ix = h
+		i = h
 		v -= 1
-		while _ix > 0:
-			_ix -= 1
-			buffer[((cur.y + v) * COLS + cur.x + _ix) * 2 + 1] = fg | bg << 4
+		while i > 0:
+			i -= 1
+			buffer[((cur.y + v) * COLS + cur.x + i) * 2 + 1] = fg | bg << 4
 
 
 func ch2int(ch: String) -> int:
