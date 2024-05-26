@@ -67,16 +67,15 @@ func _input(event: InputEvent):
 		else:
 			focus_window.key_up.emit((event as InputEventKey).keycode)
 		return
-	focus_window = get_textwidget((DisplayServer.mouse_get_position() - DisplayServer.window_get_position()) / 2)
-	if not focus_window:
-		print("Focus window not found!")
-		return
-	windows.push_front(windows.pop_at(windows.find(focus_window)))
 	if event is InputEventMouseButton:
 		if (event as InputEventMouseButton).pressed:
+			focus_window = get_textwidget((DisplayServer.mouse_get_position() - DisplayServer.window_get_position()) / 2)
+			if not focus_window:
+				return
+			windows.push_front(windows.pop_at(windows.find(focus_window)))
 			focus_window.mouse_down.emit((event as InputEventMouseButton).button_index)
-		else:
+		elif focus_window:
 			focus_window.mouse_up.emit((event as InputEventMouseButton).button_index)
-	elif event is InputEventMouseMotion:
+	elif event is InputEventMouseMotion and focus_window:
 		focus_window.mouse_move.emit(pos2char((event as InputEventMouseMotion).position), (event as InputEventMouseMotion).relative)
 		
