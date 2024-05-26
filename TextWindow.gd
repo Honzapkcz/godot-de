@@ -66,8 +66,9 @@ func resize(size: Vector2i):
 	if terminal.LINES - rect.position.y <= size.y:
 		size.y = terminal.LINES - rect.position.y - 1
 	rect.size = size
-	content.COLS = size.x - 1
-	content.LINES = size.y - 1
+	if content:
+		content.COLS = size.x - 1
+		content.LINES = size.y - 1
 
 func on_mouse_up(button: int):
 	motion_state = MOTION_EVENT_NONE
