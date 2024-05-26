@@ -86,10 +86,8 @@ func on_mouse_move(position: Vector2, delta: Vector2):
 	motion_delta += delta
 	if motion_state == MOTION_EVENT_MOVE:
 		move(Vector2i(motion_origin + motion_delta) / 8)
-		print("Moving!")
 	elif motion_state == MOTION_EVENT_SIZE:
 		resize(Vector2i(motion_origin + motion_delta) / 8)
-		print("Resizing!")
 
 #func _input(event: InputEvent):
 	#if event is InputEventMouseButton:
