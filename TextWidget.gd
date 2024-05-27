@@ -11,7 +11,11 @@ signal exit(code: int)
 
 var rect: Rect2i
 var terminal: TextBuffer
-var content: TextBuffer
+var content: TextBuffer:
+	set(value):
+		value.COLS = rect.size.x
+		value.LINES = rect.size.y
+		content = value
 
 func draw() -> void:
 	pass
