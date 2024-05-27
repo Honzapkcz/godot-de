@@ -50,6 +50,10 @@ enum {
 }
 
 var term: TextWM
+# DEBUG #
+var panel_buffer: = TextBuffer.new()
+var window_buffer: = TextBuffer.new()
+# DEBUG #
 
 func _ready():
 	DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_HIDDEN)
@@ -78,7 +82,7 @@ func _ready():
 		Color.YELLOW,
 		Color.WHITE,
 	]))
-	# DEBUG #
+	# * DEBUG * #
 	for i in range(5):
 		var win: = TextWindow.new()
 		win.rect = Rect2i(randi_range(0, 50), randi_range(0, 25), 20, 20)
@@ -87,16 +91,27 @@ func _ready():
 		win.fg_color = randi_range(0, 15)
 		win.terminal = term
 		term.windows.append(win)
-	var win: = TextPanel.new()
-	win.rect = Rect2(19, 45, 40, 4)
+	var win: = TextWindow.new()
+	win.rect = Rect2i(1, 1, 30, 15)
+	win.title = "Testing Window Content"
 	win.terminal = term
+	win.content = window_buffer
 	term.windows.append(win)
-	# DEBUG #
+	var pan: = TextPanel.new()
+	pan.rect = Rect2i(19, 45, 40, 4)
+	pan.terminal = term
+	pan.content = panel_buffer
+	term.windows.append(pan)
+	# / DEBUG / #
 
 func _draw():
+	# * DEBUG * #
+	window_buffer.addchstr(window_buffer.str2brr("Hello Window"), randi_range(0, 15))
+	panel_buffer.addchstr(panel_buffer.str2brr("Hello Window"), randi_range(0, 15))
+	# / DEBUG / #
 	term._draw()
 
-func _process(delta):
+func _process(delta: float):
 	$Cursor.position = (DisplayServer.mouse_get_position() - DisplayServer.window_get_position()) / 2
 	term._process(delta)
 	queue_redraw()
