@@ -1,7 +1,7 @@
 extends RefCounted
 ## Buffer of colored text
 ## +------+--------------+
-## | Byte | Description  |
+## | Bit  | Description  |
 ## +------+--------------+
 ## | 0-7  | Char index   |
 ## | 8-11 | FG Color idx |
@@ -47,6 +47,15 @@ var i: int
 var cur: Vector2i
 var fgc: int
 var bgc: int
+
+func copy(destbuf: TextBuffer, destx: int, desty: int) -> void:
+	i = destbuf.buffer.size() - 1
+	while i >= 0:
+		destbuf.buffer.set(desty * destbuf.COLS + destx + i, buffer[i])
+		i -= 1
+
+func copyrect(destbuf: TextBuffer, srcx: int, srcy: int, destx: int, desty: int, h: int, v: int) -> void:
+	pass
 
 func addch(ch: int, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
