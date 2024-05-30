@@ -43,6 +43,8 @@ func draw():
 	#terminal.addch(terminal.ch2int('O'), fg_color, bg_color)
 	#terminal.move(rect.position.x + rect.size.x - button_offset + 2, rect.position.y)
 	#terminal.addch(terminal.ch2int('X'), bg_color, fg_color)
+	if content:
+		content.copy(terminal, rect.position.x + 1, rect.position.y + 1)
 
 func move(pos: Vector2i):
 	if pos.x < 0:
