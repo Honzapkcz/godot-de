@@ -13,8 +13,8 @@ var rect: Rect2i
 var terminal: TextBuffer
 var content: TextBuffer:
 	set(value):
-		value.COLS = rect.size.x
-		value.LINES = rect.size.y
+		value.COLS = rect.size.x - 1
+		value.LINES = rect.size.y - 1
 		content = value
 
 func draw() -> void:
