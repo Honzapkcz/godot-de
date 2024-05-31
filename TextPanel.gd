@@ -20,3 +20,6 @@ func draw():
 	terminal.move(rect.position.x, rect.position.y)
 	terminal.rect(0x00, rect.size.x, rect.size.y)
 	terminal.border(border, rect.size.x, rect.size.y)
+	
+	if content:
+		content.copy(terminal, rect.position.x + 1, rect.position.y + 1)
