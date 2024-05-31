@@ -49,9 +49,10 @@ var fgc: int
 var bgc: int
 
 func copy(destbuf: TextBuffer, destx: int, desty: int) -> void:
-	i = destbuf.buffer.size() - 1
+	i = buffer.size() - 1
 	while i >= 0:
-		destbuf.buffer.set(desty * destbuf.COLS + destx + i, buffer[i])
+		# Someone cooked here
+		destbuf.buffer.set(desty * destbuf.COLS * 2 + destx * 2 + int(i / 2 / COLS) * (destbuf.COLS - COLS) * 2 + i, buffer[i])
 		i -= 1
 
 func copyrect(destbuf: TextBuffer, srcx: int, srcy: int, destx: int, desty: int, h: int, v: int) -> void:
