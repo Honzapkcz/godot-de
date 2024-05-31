@@ -75,7 +75,7 @@ func attron(fg: int, bg: int) -> void:
 func addchstr(str: PackedByteArray, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
-	i = len(str) - 1
+	i = clampi(len(str) - 1, 1, COLS * LINES - (cur.y * COLS + cur.x) - 1)
 	while i >= 0:
 		buffer[(cur.y * COLS + cur.x + i) * 2] = str[i]
 		buffer[(cur.y * COLS + cur.x + i) * 2 + 1] = fg | bg << 4
@@ -84,7 +84,7 @@ func addchstr(str: PackedByteArray, fg: int = -1, bg: int = -1) -> void:
 func hline(ch: int, n: int, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
-	n = clampi(n, cur.x, COLS)
+	n = clampi(n, 0, COLS * LINES - (cur.y * COLS + cur.x) - 1)
 	while n > 0:
 		buffer[(cur.y * COLS + cur.x + n) * 2] = ch
 		buffer[(cur.y * COLS + cur.x + n) * 2 + 1] = fg | bg << 4
@@ -93,8 +93,8 @@ func hline(ch: int, n: int, fg: int = -1, bg: int = -1) -> void:
 func vline(ch: int, n: int, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
-	n = clampi(n, cur.x, LINES) - 1
-	while n >= 0:
+	n = clampi(n, 0, COLS * LINES - (cur.x * LINES + cur.y) - 1)
+	while n > 0:
 		buffer[((cur.y + n) * COLS + cur.x) * 2] = ch
 		buffer[((cur.y + n) * COLS + cur.x) * 2 + 1] = fg | bg << 4
 		n -= 1
@@ -102,7 +102,8 @@ func vline(ch: int, n: int, fg: int = -1, bg: int = -1) -> void:
 func border(chs: BorderChars, h: int, v: int, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
-	
+	h = clampi(h, 0, COLS * LINES - (cur.y * COLS + cur.x) - 1)
+	v = clampi(v, 0, COLS * LINES - (cur.x * LINES + cur.y) - 1)
 	i = h
 	while i > 0:
 		buffer[(cur.y * COLS + cur.x + i) * 2] = chs.ts
@@ -136,6 +137,8 @@ func border(chs: BorderChars, h: int, v: int, fg: int = -1, bg: int = -1) -> voi
 func rect(ch: int, h: int, v: int, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
+	h = clampi(h, 0, COLS * LINES - (cur.y * COLS + cur.x) - 1)
+	v = clampi(v, 0, COLS * LINES - (cur.x * LINES + cur.y) - 1)
 	while v >= 0:
 		i = h
 		while i >= 0:
@@ -157,6 +160,8 @@ func clear(ch: int = 0x00, fg: int = -1, bg: int = -1) -> void:
 func attrset(h: int, v: int, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
+	h = clampi(h, 0, COLS * LINES - (cur.y * COLS + cur.x) - 1)
+	v = clampi(v, 0, COLS * LINES - (cur.x * LINES + cur.y) - 1)
 	while v > 0:
 		i = h
 		v -= 1
