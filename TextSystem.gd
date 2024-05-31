@@ -106,8 +106,8 @@ func _ready():
 
 func _draw():
 	# * DEBUG * #
-	window_buffer.addchstr(window_buffer.str2brr("Hello Window"), randi_range(0, 15))
-	panel_buffer.addchstr(panel_buffer.str2brr("Hello Window"), randi_range(0, 15))
+	window_buffer.addchstr(window_buffer.str2brr("Hello Window! I am content buffer and I hope I can see you soon!"), randi_range(0, 15))
+	panel_buffer.addchstr(panel_buffer.str2brr("Hello Panel! I admire your view for other windows!"), randi_range(0, 15))
 	# / DEBUG / #
 	term._draw()
 
