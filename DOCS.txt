@@ -7,6 +7,45 @@
  ├─────────────────┤
  └─────────────────┘
 
+? planned
+~ working on
+* finished
+
+CORE:
+ * TextBuffer
+ ~ TextPanel
+ ~ TextSystem
+ * TextWidget
+ * TextWM
+ ~ TextWindow
+PANEL:
+ ~ TextLauncher
+ ? TextSystemTray
+ ? TextGridPanel
+ ? TextWindowInfo
+ ? TextGlobalMenu
+ ? TextDigitalClock
+ ? TextBinaryClock
+CONTROL:
+ ? TextButton
+ ? TextCheckBox
+ ? TextMenuButton
+ ? TextLabel
+ ? TextLineEdit
+ ? TextFileEdit
+ ? TextHSlider
+ ? TextVSlider
+ ? TextProgressbar
+ ? TextSpinBox
+ ? TextImage
+ ? TextRichLabel
+ ? TextItemList
+ ? TextTree
+ ? TextMenu
+CONTAINER:
+ ? Text
+
+ VGA Text Mode Buffer Layout 
  +---+-----------+------------+
  | B | Character |  Atribute  |
  +---+-----------+------------+
@@ -19,6 +58,8 @@
  | 1 | Char 1    | FG 1       |
  | 0 | Char 0    | FG 0/UndrL |
  +---+-----------+------------+
+
+ VGA Color Pallete
  +-----+------------+
  | Hex | Color Name |
  +-----+------------+
@@ -39,6 +80,15 @@
  | 0xE | Yellow     |
  | 0xF | White      |
  +-----+------------+
+
+ VGA Color Pallete Encoding
+ +--------+---------+
+ | Bit    | 3 2 1 0 |
+ +--------+---------+
+ | Filter | W R G B |
+ +--------+---------+
+
+ DOS Code Page 437 Encoding
  +------+---------------------------------+
  |      | 0 1 2 3 4 5 6 7 8 9 A B C D E F |
  +------+---------------------------------+
