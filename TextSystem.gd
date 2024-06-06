@@ -83,7 +83,7 @@ func _ready():
 	for i in range(5):
 		var win: = TextWindow.new()
 		win.rect = Rect2i(randi_range(0, 50), randi_range(0, 25), 20, 20)
-		win.title = ["Hello", "World", "by Honzapkcz", "Windows Manager Test"][randi_range(0, 3)]
+		win.title = (["Hello", "World", "by Honzapkcz", "Windows Manager Test"] as Array[String])[randi_range(0, 3)]
 		win.bg_color = randi_range(0, 15)
 		win.fg_color = randi_range(0, 15)
 		win.parent = term
