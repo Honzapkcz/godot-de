@@ -86,17 +86,17 @@ func _ready():
 		win.title = ["Hello", "World", "by Honzapkcz", "Windows Manager Test"][randi_range(0, 3)]
 		win.bg_color = randi_range(0, 15)
 		win.fg_color = randi_range(0, 15)
-		win.terminal = term
+		win.parent = term
 		term.windows.append(win)
 	var win: = TextWindow.new()
 	win.rect = Rect2i(1, 1, 30, 15)
 	win.title = "Testing Window Content"
-	win.terminal = term
+	win.parent = term
 	win.content = window_buffer
 	term.windows.append(win)
 	var pan: = TextPanel.new()
 	pan.rect = Rect2i(19, 45, 40, 4)
-	pan.terminal = term
+	pan.parent = term
 	pan.content = panel_buffer
 	term.windows.append(pan)
 	# / DEBUG / #

@@ -16,10 +16,10 @@ func _init():
 	border.br = TextSystem.ACS_DBBD
 
 func draw():
-	terminal.attron(fg_color, bg_color)
-	terminal.move(rect.position.x, rect.position.y)
-	terminal.rect(0x00, rect.size.x, rect.size.y)
-	terminal.border(border, rect.size.x, rect.size.y)
+	parent.attron(fg_color, bg_color)
+	parent.move(rect.position.x, rect.position.y)
+	parent.rect(0x00, rect.size.x, rect.size.y)
+	parent.border(border, rect.size.x, rect.size.y)
 	
 	if content:
-		content.copy(terminal, rect.position.x + 1, rect.position.y + 1)
+		content.copy(parent, rect.position.x + 1, rect.position.y + 1)
