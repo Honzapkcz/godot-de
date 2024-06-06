@@ -1,4 +1,4 @@
-extends CanvasItem
+extends Node2D
 class_name TextSystem
 
 ## ACS_trbl (top, right, bottom, left)
@@ -88,17 +88,24 @@ func _ready():
 		win.fg_color = randi_range(0, 15)
 		win.parent = term
 		term.windows.append(win)
+	
 	var win: = TextWindow.new()
 	win.rect = Rect2i(1, 1, 30, 15)
 	win.title = "Testing Window Content"
 	win.parent = term
 	win.content = window_buffer
 	term.windows.append(win)
+	
 	var pan: = TextPanel.new()
 	pan.rect = Rect2i(19, 45, 40, 4)
 	pan.parent = term
 	pan.content = panel_buffer
-	term.windows.append(pan)
+	term.tops.append(pan)
+	
+	pan = TextPanel.new()
+	pan.rect = Rect2i(40, 0, 39, 5)
+	pan.parent = term
+	term.bottoms.append(pan)
 	# / DEBUG / #
 
 func _draw():
