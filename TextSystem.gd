@@ -1,4 +1,4 @@
-extends Node2D
+extends CanvasItem
 class_name TextSystem
 
 ## ACS_trbl (top, right, bottom, left)
@@ -57,30 +57,27 @@ var window_buffer: = TextBuffer.new()
 
 func _ready():
 	DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_HIDDEN)
-	get_viewport().transparent_bg = true
-	term = TextWM.new()
-	term.canvas = get_canvas_item()
+	term = TextWM.new(get_canvas_item())
 	term.LINES = 50
 	term.COLS = 80
-	move_child($Cursor, -1)
 	term.pallete.clear()
 	term.pallete.append_array(PackedColorArray([
-		Color.BLACK,
-		Color.BLUE,
-		Color.GREEN,
-		Color.CYAN,
-		Color.RED,
-		Color.MAGENTA,
-		Color.BROWN,
-		Color.GRAY,
-		Color.DARK_GRAY,
-		Color.LIGHT_BLUE,
-		Color.LIGHT_GREEN,
-		Color.LIGHT_CYAN,
-		Color.LIGHT_CORAL,
-		Color.HOT_PINK,
-		Color.YELLOW,
-		Color.WHITE,
+		Color8(0x00, 0x00, 0x00), # Black
+		Color8(0x00, 0x00, 0xFF), # Blue
+		Color8(0x00, 0xFF, 0x00), # Green
+		Color8(0x00, 0xFF, 0xFF), # Cyan
+		Color8(0xFF, 0x00, 0x00), # Red
+		Color8(0xFF, 0x00, 0xFF), # Magenta
+		Color8(0xA8, 0xA8, 0x56), # Yellow
+		Color8(0xC0, 0xC7, 0xC8), # Gray
+		Color8(0x87, 0x88, 0x8F), # Dark Gray
+		Color8(0x00, 0x00, 0xA8), # Light Blue
+		Color8(0x00, 0x8A, 0x56), # Light Green
+		Color8(0x56, 0xA8, 0xA8), # Light Cyan
+		Color8(0xA8, 0x00, 0x56), # Light Red
+		Color8(0xA8, 0x57, 0xA8), # Light Magenta
+		Color8(0xA8, 0xA8, 0x56), # Yellow
+		Color8(0xFF, 0xFF, 0xFF), # White
 	]))
 	# * DEBUG * #
 	for i in range(5):
@@ -112,7 +109,6 @@ func _draw():
 	term._draw()
 
 func _process(delta: float):
-	$Cursor.position = (DisplayServer.mouse_get_position() - DisplayServer.window_get_position()) / 2
 	term._process(delta)
 	queue_redraw()
 
