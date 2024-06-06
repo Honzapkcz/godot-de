@@ -11,6 +11,8 @@ var canvas_item: RID
 var mouse_position: Vector2
 var focus_window: TextWidget
 var windows: Array[TextWidget]
+var tops: Array[TextWidget]
+var bottoms: Array[TextWidget]
 var pallete: = PackedColorArray([Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
 	Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
 	Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK])
@@ -20,11 +22,21 @@ func pos2char(pos: Vector2) -> Vector2i:
 
 func get_textwidget(pos: Vector2i) -> TextWidget:
 	pos = Vector2i(pos / 8)
+	
+	for i in tops:
+		if pos.x >= i.rect.position.x and pos.y >= i.rect.position.y and \
+		pos.x <= i.rect.end.x and pos.y <= i.rect.end.y:
+			return i
+	
 	for i in windows:
 		if pos.x >= i.rect.position.x and pos.y >= i.rect.position.y and \
 		pos.x <= i.rect.end.x and pos.y <= i.rect.end.y:
 			return i
-	#return windows[0] # HACK
+	
+	for i in bottoms:
+		if pos.x >= i.rect.position.x and pos.y >= i.rect.position.y and \
+		pos.x <= i.rect.end.x and pos.y <= i.rect.end.y:
+			return i
 	return null
 
 func _init(canvas_parent: RID) -> void:
@@ -34,18 +46,14 @@ func _init(canvas_parent: RID) -> void:
 	canvas_item = RenderingServer.canvas_item_create()
 	RenderingServer.canvas_item_set_parent(canvas_item, canvas)
 
-# TODO: need to fix this somehow
 func _draw() -> void:
 	j = 0
 	RenderingServer.canvas_item_clear(canvas_item)
 	while j < LINES:
 		i = 0
 		while i < COLS:
-			#draw_rect(Rect2(ix * width, iy * height, width, height), pallete[(buffer[(iy * COLS + ix) * 2 + 1] & 0b11110000) >> 4])
 			RenderingServer.canvas_item_add_rect(canvas_item, Rect2(i * width, j * height, width, height), pallete[(buffer[(j * COLS + i) * 2 + 1] & 0b11110000) >> 4])
 			if buffer[(j * COLS + i) * 2]:
-				#draw_char(font, Vector2(ix * width, iy * height + height / 2), char(buffer[(iy * COLS + ix) * 2]), size, pallete[buffer[(iy * COLS + ix) * 2 + 1] & 0b00001111])
-				#RenderingServer.canvas_item_add_circle(canvas_item, Vector2(_ix * width + 4, j * height + 4), buffer[(j * COLS + _ix) * 2] / 32, pallete[buffer[(j * COLS + _ix) * 2 + 1] & 0b00001111])
 				RenderingServer.canvas_item_add_texture_rect_region(canvas_item, Rect2(i * width, j * height, width, height), font, Rect2(buffer[(j * COLS + i) * 2] % 16 * width,
 					int(buffer[(j * COLS + i) * 2] / 16) * height, width, height), pallete[buffer[(j * COLS + i) * 2 + 1] & 0b00001111])
 			i += 1
@@ -55,11 +63,21 @@ func _draw() -> void:
 func _process(delta):
 	move(0, 0)
 	rect(0x00, COLS - 1, LINES - 1, 0, 0)
-	windows.reverse()
-	for i in windows:
-		i.draw()
-	windows.reverse()
-	#refresh()
+	
+	j = len(bottoms) - 1
+	while j >= 0:
+		bottoms[j].draw()
+		j -= 1
+	
+	j = len(windows) - 1
+	while j >= 0:
+		windows[j].draw()
+		j -= 1
+	
+	j = len(tops) - 1
+	while j >= 0:
+		tops[j].draw()
+		j -= 1
 
 func _input(event: InputEvent):
 	if event is InputEventKey and focus_window:
@@ -73,12 +91,13 @@ func _input(event: InputEvent):
 			focus_window = get_textwidget(mouse_position)
 			if not focus_window:
 				return
-			windows.push_front(windows.pop_at(windows.find(focus_window)))
+			if focus_window in windows:
+				windows.push_front(windows.pop_at(windows.find(focus_window)))
 			focus_window.mouse_down.emit((event as InputEventMouseButton).button_index)
 		elif focus_window:
 			focus_window.mouse_up.emit((event as InputEventMouseButton).button_index)
 	elif event is InputEventMouseMotion:
-		mouse_position = event.position
+		mouse_position = (event as InputEventMouseMotion).position
 		if focus_window:
 			focus_window.mouse_move.emit(pos2char((event as InputEventMouseMotion).position), (event as InputEventMouseMotion).relative)
 		
