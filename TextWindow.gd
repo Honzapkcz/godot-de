@@ -6,7 +6,10 @@ enum {
 	MOTION_EVENT_MOVE,
 	MOTION_EVENT_SIZE,
 }
-var child: TextBuffer
+var child: TextBuffer:
+	set(value):
+		value.COLS = rect.size.x - 2
+		value.LINES = rect.size.y - 2
 var title: String
 var button_offset: int = 2
 var title_offset: int = 2
@@ -35,7 +38,7 @@ func draw():
 	content.attron(fg_color, bg_color)
 	content.move(0, 0)
 	content.rect(0x00, rect.size.x, rect.size.y)
-	content.border(border, rect.size.x - 2, rect.size.y - 2)
+	content.border(border, rect.size.x, rect.size.y)
 	content.move(title_offset, 0)
 	content.addchstr(content.str2brr("[ " + title + " ]"))
 	#content.move(rect.position.x + rect.size.x - button_offset, rect.position.y)
@@ -45,7 +48,7 @@ func draw():
 	#content.move(rect.position.x + rect.size.x - button_offset + 2, rect.position.y)
 	#content.addch(content.ch2int('X'), bg_color, fg_color)
 	if child:
-		child.copy(content, 1, 1)
+		child.copy(content, 0, 0)
 
 func move(pos: Vector2i):
 	if pos.x < 0:
@@ -69,8 +72,8 @@ func resize(size: Vector2i):
 	if Engine.get_singleton(&"TextSystem").term.LINES - rect.position.y <= size.y:
 		size.y = Engine.get_singleton(&"TextSystem").term.LINES - rect.position.y - 1
 	rect.size = size
-	content.COLS = size.x
-	content.LINES = size.y
+	content.COLS = size.x + 1
+	content.LINES = size.y + 1
 	if child:
 		child.COLS = rect.size.x - 2
 		child.LINES = rect.size.y - 2

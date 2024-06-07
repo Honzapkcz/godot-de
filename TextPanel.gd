@@ -25,8 +25,8 @@ func _init():
 func draw():
 	content.attron(fg_color, bg_color)
 	content.move(0, 0)
-	content.rect(0x00, rect.size.x - 1, rect.size.y - 1)
-	content.border(border, rect.size.x - 1, rect.size.y -1)
+	content.rect(0x00, rect.size.x, rect.size.y)
+	content.border(border, rect.size.x, rect.size.y)
 	
 	if child:
 		child.copy(content, 1, 1)

@@ -33,16 +33,16 @@ func set_rect(value: Rect2i) -> void:
 		push_error("rect.position.y cannot be less than 0")
 		rect.position.y = 0
 	if content:
-		content.COLS = value.size.x
-		content.LINES = value.size.y
+		content.COLS = value.size.x + 1
+		content.LINES = value.size.y + 1
 	rect = value
 
 func get_rect() -> Rect2i:
 	return rect
 
 func set_content(value: TextBuffer) -> void:
-	value.COLS = rect.size.x
-	value.LINES = rect.size.y
+	value.COLS = rect.size.x + 1
+	value.LINES = rect.size.y + 1
 	content = value
 
 func get_content() -> TextBuffer:
