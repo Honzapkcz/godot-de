@@ -13,14 +13,14 @@ class_name TextBuffer
 	set(value):
 		if value < 1:
 			push_error("Cannot have zero height buffer")
-			return
+			value = 1
 		LINES = value
 		buffer.resize(COLS * LINES * 2)
 @export var COLS: int:
 	set(value):
 		if value < 1:
 			push_error("Cannot have zero width buffer")
-			return
+			value = 1
 		COLS = value
 		buffer.resize(COLS * LINES * 2)
 
