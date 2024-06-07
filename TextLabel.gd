@@ -53,6 +53,10 @@ var bg_color: int = 0:
 func _init():
 	content = TextBuffer.new()
 
+func set_rect(value: Rect2i):
+	super(value)
+	redraw = true
+
 func draw() -> void:
 	if not redraw:
 		return
