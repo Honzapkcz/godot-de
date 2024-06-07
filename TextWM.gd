@@ -67,16 +67,19 @@ func _process(delta):
 	j = len(bottoms) - 1
 	while j >= 0:
 		bottoms[j].draw()
+		bottoms[j].content.copy(self, bottoms[j].rect.position.x, bottoms[j].rect.position.y)
 		j -= 1
 	
 	j = len(windows) - 1
 	while j >= 0:
 		windows[j].draw()
+		windows[j].content.copy(self, windows[j].rect.position.x, windows[j].rect.position.y)
 		j -= 1
 	
 	j = len(tops) - 1
 	while j >= 0:
 		tops[j].draw()
+		tops[j].content.copy(self, tops[j].rect.position.x, tops[j].rect.position.y)
 		j -= 1
 
 func _input(event: InputEvent):

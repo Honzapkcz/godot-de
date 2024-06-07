@@ -6,6 +6,7 @@ enum {
 	MOTION_EVENT_MOVE,
 	MOTION_EVENT_SIZE,
 }
+var child: TextBuffer
 var title: String
 var button_offset: int = 2
 var title_offset: int = 2
@@ -31,30 +32,30 @@ func _init():
 
 
 func draw():
-	parent.attron(fg_color, bg_color)
-	parent.move(rect.position.x, rect.position.y)
-	parent.rect(0x00, rect.size.x, rect.size.y)
-	parent.border(border, rect.size.x, rect.size.y)
-	parent.move(rect.position.x + title_offset, rect.position.y)
-	parent.addchstr(parent.str2brr("[ " + title + " ]"))
-	#parent.move(rect.position.x + rect.size.x - button_offset, rect.position.y)
-	#parent.addch(0x94, fg_color, bg_color)
-	#parent.move(rect.position.x + rect.size.x - button_offset + 1, rect.position.y)
-	#parent.addch(parent.ch2int('O'), fg_color, bg_color)
-	#parent.move(rect.position.x + rect.size.x - button_offset + 2, rect.position.y)
-	#parent.addch(parent.ch2int('X'), bg_color, fg_color)
-	if content:
-		content.copy(parent, rect.position.x + 1, rect.position.y + 1)
+	content.attron(fg_color, bg_color)
+	content.move(0, 0)
+	content.rect(0x00, rect.size.x, rect.size.y)
+	content.border(border, rect.size.x - 2, rect.size.y - 2)
+	content.move(title_offset, 0)
+	content.addchstr(content.str2brr("[ " + title + " ]"))
+	#content.move(rect.position.x + rect.size.x - button_offset, rect.position.y)
+	#content.addch(0x94, fg_color, bg_color)
+	#content.move(rect.position.x + rect.size.x - button_offset + 1, rect.position.y)
+	#content.addch(content.ch2int('O'), fg_color, bg_color)
+	#content.move(rect.position.x + rect.size.x - button_offset + 2, rect.position.y)
+	#content.addch(content.ch2int('X'), bg_color, fg_color)
+	if child:
+		child.copy(content, 1, 1)
 
 func move(pos: Vector2i):
 	if pos.x < 0:
 		pos.x = 0
 	if pos.y < 0:
 		pos.y = 0
-	if rect.size.x + pos.x >= parent.COLS:
-		pos.x = parent.COLS - rect.size.x - 1
-	if rect.size.y + pos.y >= parent.LINES:
-		pos.y = parent.LINES - rect.size.y - 1
+	if rect.size.x + pos.x >= Engine.get_singleton(&"TextSystem").term.COLS:
+		pos.x = Engine.get_singleton(&"TextSystem").term.COLS - rect.size.x - 1
+	if rect.size.y + pos.y >= Engine.get_singleton(&"TextSystem").term.LINES:
+		pos.y = Engine.get_singleton(&"TextSystem").term.LINES - rect.size.y - 1
 	rect.position = pos
 	
 
@@ -63,14 +64,16 @@ func resize(size: Vector2i):
 		size.x = 2
 	if size.y <= 1:
 		size.y = 2
-	if parent.COLS - rect.position.x <= size.x:
-		size.x = parent.COLS - rect.position.x - 1
-	if parent.LINES - rect.position.y <= size.y:
-		size.y = parent.LINES - rect.position.y - 1
+	if Engine.get_singleton(&"TextSystem").term.COLS - rect.position.x <= size.x:
+		size.x = Engine.get_singleton(&"TextSystem").term.COLS - rect.position.x - 1
+	if Engine.get_singleton(&"TextSystem").term.LINES - rect.position.y <= size.y:
+		size.y = Engine.get_singleton(&"TextSystem").term.LINES - rect.position.y - 1
 	rect.size = size
-	if content:
-		content.COLS = size.x - 1
-		content.LINES = size.y - 1
+	content.COLS = size.x
+	content.LINES = size.y
+	if child:
+		child.COLS = rect.size.x - 2
+		child.LINES = rect.size.y - 2
 
 func on_mouse_up(button: int):
 	motion_state = MOTION_EVENT_NONE

@@ -1,6 +1,11 @@
 extends TextWidget
 class_name TextPanel
 
+var child: TextBuffer:
+	set(value):
+		value.COLS = rect.size.x - 2
+		value.LINES = rect.size.y - 2
+		child = value
 var border: = TextBuffer.BorderChars.new()
 var fg_color: int = 15
 var bg_color: int = 0
@@ -14,12 +19,14 @@ func _init():
 	border.tr = TextSystem.ACS_BBDS
 	border.bl = TextSystem.ACS_SDBB
 	border.br = TextSystem.ACS_DBBD
+	
+	content = TextBuffer.new()
 
 func draw():
-	parent.attron(fg_color, bg_color)
-	parent.move(rect.position.x, rect.position.y)
-	parent.rect(0x00, rect.size.x, rect.size.y)
-	parent.border(border, rect.size.x, rect.size.y)
+	content.attron(fg_color, bg_color)
+	content.move(0, 0)
+	content.rect(0x00, rect.size.x - 1, rect.size.y - 1)
+	content.border(border, rect.size.x - 1, rect.size.y -1)
 	
-	if content:
-		content.copy(parent, rect.position.x + 1, rect.position.y + 1)
+	if child:
+		child.copy(content, 1, 1)
