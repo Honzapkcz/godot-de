@@ -3,8 +3,8 @@ class_name TextPanel
 
 var child: TextBuffer:
 	set(value):
-		value.COLS = rect.size.x - 2
-		value.LINES = rect.size.y - 2
+		value.COLS = rect.size.x - 1
+		value.LINES = rect.size.y - 1
 		child = value
 var border: = TextBuffer.BorderChars.new()
 var fg_color: int = 15
@@ -30,3 +30,24 @@ func draw():
 	
 	if child:
 		child.copy(content, 1, 1)
+
+func set_rect(value: Rect2i) -> void:
+	if rect.size.x < 1:
+		push_error("rect.size.x cannot be less than 1")
+		rect.size.x = 1
+	if rect.size.y < 1:
+		push_error("rect.size.y cannot be less than 1")
+		rect.size.x = 1
+	if rect.position.x < 0:
+		push_error("rect.position.x cannot be less than 0")
+		rect.position.x = 0
+	if rect.position.y < 0:
+		push_error("rect.position.y cannot be less than 0")
+		rect.position.y = 0
+	if content:
+		content.COLS = value.size.x + 1
+		content.LINES = value.size.y + 1
+	if child:
+		child.COLS = value.size.x + 1
+		child.LINES = value.size.y + 1
+	rect = value
