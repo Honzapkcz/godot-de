@@ -9,15 +9,16 @@
 
 ? planned
 ~ working on
+! untested
 * finished
 
 CORE:
  * TextBuffer
- ~ TextPanel
+ * TextPanel
  ~ TextSystem
  * TextWidget
  * TextWM
- ~ TextWindow
+ * TextWindow
 PANEL:
  ~ TextLauncher
  ? TextSystemTray
@@ -30,7 +31,7 @@ CONTROL:
  ? TextButton
  ? TextCheckBox
  ? TextMenuButton
- ? TextLabel
+ ! TextLabel
  ? TextLineEdit
  ? TextFileEdit
  ? TextHSlider
@@ -43,7 +44,13 @@ CONTROL:
  ? TextTree
  ? TextMenu
 CONTAINER:
- ? Text
+ ? TextHBoxContainer
+ ? TextVBoxContainer
+ ? TextGridContainer
+ ~ TextPositionContainer
+ ? TextMarginContainer
+ ? TextHSplitContainer
+ ? TextVSplitContainer
 
  VGA Text Mode Buffer Layout 
  +---+-----------+------------+
