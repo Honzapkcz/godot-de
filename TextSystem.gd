@@ -57,6 +57,7 @@ var window_buffer: = TextBuffer.new()
 
 func _ready():
 	DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_HIDDEN)
+	Engine.register_singleton(&"TextSystem", self)
 	term = TextWM.new(get_canvas_item())
 	term.LINES = 50
 	term.COLS = 80
@@ -86,25 +87,21 @@ func _ready():
 		win.title = (["Hello", "World", "by Honzapkcz", "Windows Manager Test"] as Array[String])[randi_range(0, 3)]
 		win.bg_color = randi_range(0, 15)
 		win.fg_color = randi_range(0, 15)
-		win.parent = term
 		term.windows.append(win)
 	
 	var win: = TextWindow.new()
 	win.rect = Rect2i(1, 1, 30, 15)
+	win.child = window_buffer
 	win.title = "Testing Window Content"
-	win.parent = term
-	win.content = window_buffer
 	term.windows.append(win)
 	
 	var pan: = TextPanel.new()
 	pan.rect = Rect2i(19, 45, 40, 4)
-	pan.parent = term
-	pan.content = panel_buffer
+	pan.child = panel_buffer
 	term.tops.append(pan)
 	
 	pan = TextPanel.new()
 	pan.rect = Rect2i(40, 0, 39, 5)
-	pan.parent = term
 	term.bottoms.append(pan)
 	# / DEBUG / #
 
