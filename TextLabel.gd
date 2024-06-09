@@ -18,9 +18,6 @@ enum  {
 	#VERTICAL_ALIGNMENT_FILL,
 }
 
-## Set when changing any of the properties[br]
-## Determines if needs to be redrawn 
-var redraw: bool
 ## Text to display
 var text: String:
 	set(value):
