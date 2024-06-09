@@ -53,6 +53,7 @@ var term: TextWM
 # DEBUG #
 var panel_buffer: = TextBuffer.new()
 var window_buffer: = TextBuffer.new()
+var debug_buffer: = TextBuffer.new()
 # DEBUG #
 
 func _ready():
@@ -95,6 +96,12 @@ func _ready():
 	win.title = "Testing Window Content"
 	term.windows.append(win)
 	
+	win = TextWindow.new()
+	win.rect = Rect2i(5, 5, 20, 20)
+	win.title = "Debug Window"
+	win.child = debug_buffer
+	term.windows.append(win)
+	
 	var pan: = TextPanel.new()
 	pan.rect = Rect2i(19, 45, 40, 4)
 	pan.child = panel_buffer
@@ -107,8 +114,10 @@ func _ready():
 
 func _draw():
 	# * DEBUG * #
-	window_buffer.addchstr(window_buffer.str2brr("Hello Window! I am content buffer and I hope I can see you soon!"), randi_range(0, 15))
+	window_buffer.clear(0x00, 0b0000, 0b0100)
+	window_buffer.addchstr(window_buffer.str2brr("Hello Window! I am content buffer and I hope I can see you soon!"), randi_range(0, 15), 0b0100)
 	panel_buffer.addchstr(panel_buffer.str2brr("Hello Panel! I admire your view for other windows!"), randi_range(0, 15))
+	debug_buffer.addchstr(debug_buffer.str2brr(str(int(Engine.get_frames_per_second()))), 15)
 	# / DEBUG / #
 	term._draw()
 
