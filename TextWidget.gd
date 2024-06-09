@@ -13,6 +13,7 @@ const NOTIFICATION_DYNAMIC_PROCCESS: int = 3000
 const NOTIFICATION_STATIC_PROCCESS: int = 3001
 const NOTIFICATION_BUFFER_UPDATE: int = 3002
 
+var redraw: bool
 var rect: Rect2i = Rect2i(0, 0, 1, 1): set = set_rect, get = get_rect
 var content: TextBuffer = TextBuffer.new(): set = set_content, get = get_content
 
