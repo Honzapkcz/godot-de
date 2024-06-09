@@ -51,9 +51,11 @@ enum {
 
 var term: TextWM
 # DEBUG #
-var panel_buffer: = TextBuffer.new()
-var window_buffer: = TextBuffer.new()
-var debug_buffer: = TextBuffer.new()
+var hello_panel: = TextWidget.new()
+var hello_window: = TextWidget.new()
+var debug_window: = TextWidget.new()
+var position_container: = TextPositionContainer.new()
+var position_label: = TextLabel.new()
 # DEBUG #
 
 func _ready():
@@ -82,29 +84,32 @@ func _ready():
 		Color8(0xFF, 0xFF, 0xFF), # White
 	]))
 	# * DEBUG * #
-	for i in range(5):
-		var win: = TextWindow.new()
-		win.rect = Rect2i(randi_range(0, 50), randi_range(0, 25), 20, 20)
-		win.title = (["Hello", "World", "by Honzapkcz", "Windows Manager Test"] as Array[String])[randi_range(0, 3)]
-		win.bg_color = randi_range(0, 15)
-		win.fg_color = randi_range(0, 15)
-		term.windows.append(win)
 	
 	var win: = TextWindow.new()
 	win.rect = Rect2i(1, 1, 30, 15)
-	win.child = window_buffer
+	win.child = hello_window
 	win.title = "Testing Window Content"
 	term.windows.append(win)
 	
 	win = TextWindow.new()
 	win.rect = Rect2i(5, 5, 20, 20)
 	win.title = "Debug Window"
-	win.child = debug_buffer
+	win.child = debug_window
+	term.windows.append(win)
+	
+	win = TextWindow.new()
+	win.rect = Rect2i(20, 20, 20, 10)
+	win.title = "GUI Go Brrr"
+	win.child = position_container
+	position_label.text = "Hello, I'm Label"
+	position_label.rect = Rect2i(1, 1, 10, 2)
+	position_label.fg_color = 2
+	position_container.children.append(position_label)
 	term.windows.append(win)
 	
 	var pan: = TextPanel.new()
 	pan.rect = Rect2i(19, 45, 40, 4)
-	pan.child = panel_buffer
+	pan.child = hello_panel
 	term.tops.append(pan)
 	
 	pan = TextPanel.new()
@@ -114,10 +119,10 @@ func _ready():
 
 func _draw():
 	# * DEBUG * #
-	window_buffer.clear(0x00, 0b0000, 0b0100)
-	window_buffer.addchstr(window_buffer.str2brr("Hello Window! I am content buffer and I hope I can see you soon!"), randi_range(0, 15), 0b0100)
-	panel_buffer.addchstr(panel_buffer.str2brr("Hello Panel! I admire your view for other windows!"), randi_range(0, 15))
-	debug_buffer.addchstr(debug_buffer.str2brr(str(int(Engine.get_frames_per_second()))), 15)
+	hello_window.content.clear(0x00, 0b0000, 0b0100)
+	hello_window.content.addchstr(hello_window.content.str2brr("Hello Window! I am content buffer and I hope I can see you soon!"), randi_range(0, 15), 0b0100)
+	hello_panel.content.addchstr(hello_panel.content.str2brr("Hello Panel! I admire your view for other windows!"), randi_range(0, 15))
+	debug_window.content.addchstr(debug_window.content.str2brr(str(int(Engine.get_frames_per_second()))), 15)
 	# / DEBUG / #
 	term._draw()
 
