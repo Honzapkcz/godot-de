@@ -6,10 +6,10 @@ enum {
 	MOTION_EVENT_MOVE,
 	MOTION_EVENT_SIZE,
 }
-var child: TextBuffer:
+var child: TextWidget:
 	set(value):
-		value.COLS = rect.size.x - 1
-		value.LINES = rect.size.y - 1
+		value.content.COLS = rect.size.x - 1
+		value.content.LINES = rect.size.y - 1
 		child = value
 var title: String
 var button_offset: int = 2
@@ -49,7 +49,10 @@ func draw():
 	#content.move(rect.position.x + rect.size.x - button_offset + 2, rect.position.y)
 	#content.addch(content.ch2int('X'), bg_color, fg_color)
 	if child:
-		child.copy(content, 1, 1)
+		redraw = redraw or child.redraw
+		child.draw()
+		if redraw:
+			child.content.copy(content, 1, 1)
 
 func move(pos: Vector2i):
 	if pos.x < 0:
@@ -76,8 +79,7 @@ func resize(size: Vector2i):
 	content.COLS = size.x + 1
 	content.LINES = size.y + 1
 	if child:
-		child.COLS = rect.size.x - 1
-		child.LINES = rect.size.y - 1
+		child.rect.size = rect.size - Vector2i(2, 2)
 
 func on_mouse_up(button: int):
 	motion_state = MOTION_EVENT_NONE

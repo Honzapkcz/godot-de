@@ -1,10 +1,9 @@
 extends TextWidget
 class_name TextPanel
 
-var child: TextBuffer:
+var child: TextWidget:
 	set(value):
-		value.COLS = rect.size.x - 1
-		value.LINES = rect.size.y - 1
+		value.rect.size = rect.size - Vector2i(2, 2)
 		child = value
 var border: = TextBuffer.BorderChars.new()
 var fg_color: int = 15
@@ -29,10 +28,10 @@ func draw():
 	content.border(border, rect.size.x, rect.size.y)
 	
 	if child:
-		child.copy(content, 1, 1)
+		child.content.copy(content, 1, 1)
 
 func set_rect(value: Rect2i) -> void:
 	super(value)
 	if child:
-		child.COLS = value.size.x + 1
-		child.LINES = value.size.y + 1
+		child.content.COLS = value.size.x + 1
+		child.content.LINES = value.size.y + 1
