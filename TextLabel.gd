@@ -18,11 +18,18 @@ enum  {
 	#VERTICAL_ALIGNMENT_FILL,
 }
 
+## Set when changing any of the properties[br]
+## Determines if needs to be redrawn 
 var redraw: bool
+## Text to display
 var text: String:
 	set(value):
 		text = value
 		redraw = true
+## Where to align text on the line
+## [code]
+## horizontal_align = HORIZONTAL_ALIGNMENT_CENTER
+## [/code]
 var horizontal_align: int:
 	set(value):
 		if value < 0 or value > 2:
@@ -61,7 +68,15 @@ func draw() -> void:
 	if not redraw:
 		return
 	# Someone horribly cooked here
-	content.move(0 if horizontal_align == HORIZONTAL_ALIGNMENT_LEFT else int(rect.position.x / 2 - len(text) / 2) if horizontal_align == HORIZONTAL_ALIGNMENT_CENTER else rect.position.x - len(text), 0 if vertical_align == VERTICAL_ALIGNMENT_TOP else int(rect.position.y / 2 - (rect.position.x / len(text) / 2)) if vertical_align == VERTICAL_ALIGNMENT_CENTER else rect.position.y - int(rect.position.x / len(text)))
+	content.move(0 
+		if horizontal_align == HORIZONTAL_ALIGNMENT_LEFT
+		else int(rect.position.x / 2 - len(text) / 2)
+		if horizontal_align == HORIZONTAL_ALIGNMENT_CENTER 
+		else rect.position.x - len(text), 0
+		if vertical_align == VERTICAL_ALIGNMENT_TOP
+		else int(rect.position.y / 2 - (rect.position.x / len(text) / 2))
+		if vertical_align == VERTICAL_ALIGNMENT_CENTER
+		else rect.position.y - int(rect.position.x / len(text)))
 	content.attron(fg_color, bg_color)
 	content.addchstr(content.str2brr(text.substr(0, visible_characters)))
 	
