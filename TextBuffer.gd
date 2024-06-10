@@ -77,7 +77,7 @@ func attron(fg: int, bg: int) -> void:
 func addchstr(str: PackedByteArray, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
 	bg = bg if bg >= 0 and bg < 16 else bgc
-	i = clampi(len(str) - 1, 0, COLS * LINES - (cur.y * COLS + cur.x) - 1)
+	i = clampi(len(str) - 1, -1, COLS * LINES - (cur.y * COLS + cur.x) - 1)
 	while i >= 0:
 		buffer[(cur.y * COLS + cur.x + i) * 2] = str[i]
 		buffer[(cur.y * COLS + cur.x + i) * 2 + 1] = fg | bg << 4
