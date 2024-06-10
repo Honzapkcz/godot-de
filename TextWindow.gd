@@ -11,12 +11,30 @@ var child: TextWidget:
 		value.content.COLS = rect.size.x - 1
 		value.content.LINES = rect.size.y - 1
 		child = value
-var title: String
-var button_offset: int = 2
-var title_offset: int = 2
-var fg_color: int = 15
-var bg_color: int = 0
-var border: = TextBuffer.BorderChars.new()
+var title: String:
+	set(value):
+		title = value
+		redraw = true
+var button_offset: int = 3:
+	set(value):
+		button_offset = value
+		redraw = true
+var title_offset: int = 2:
+	set(value):
+		title_offset = value
+		redraw = true
+var fg_color: int = 15:
+	set(value):
+		fg_color = value
+		redraw = true
+var bg_color: int = 0:
+	set(value):
+		bg_color = value
+		redraw = true
+var border: = TextBuffer.BorderChars.new():
+	set(value):
+		border = value
+		redraw = true
 var motion_state: int
 var motion_origin: Vector2
 var motion_delta: Vector2
@@ -36,22 +54,24 @@ func _init():
 
 
 func draw():
-	content.attron(fg_color, bg_color)
-	content.move(0, 0)
-	content.rect(0x00, rect.size.x, rect.size.y)
-	content.border(border, rect.size.x, rect.size.y)
-	content.move(title_offset, 0)
-	content.addchstr(content.str2brr("[ " + title + " ]"))
-	#content.move(rect.position.x + rect.size.x - button_offset, rect.position.y)
-	#content.addch(0x94, fg_color, bg_color)
-	#content.move(rect.position.x + rect.size.x - button_offset + 1, rect.position.y)
-	#content.addch(content.ch2int('O'), fg_color, bg_color)
-	#content.move(rect.position.x + rect.size.x - button_offset + 2, rect.position.y)
-	#content.addch(content.ch2int('X'), bg_color, fg_color)
+	redraw = true # HACK
 	if child:
 		redraw = redraw or child.redraw
 		child.draw()
-		if redraw:
+	if redraw:
+		content.attron(fg_color, bg_color)
+		content.move(0, 0)
+		content.rect(0x00, rect.size.x, rect.size.y)
+		content.border(border, rect.size.x, rect.size.y)
+		content.move(title_offset, 0)
+		content.addchstr(content.str2brr(("[ " + title + " ]").substr(0, max(rect.size.x - button_offset - title_offset, 0))))
+		content.move(rect.size.x - button_offset, 0)
+		content.addch(0x94, fg_color, bg_color)
+		content.move(rect.size.x - button_offset + 1, 0)
+		content.addch(content.ch2int('O'), fg_color, bg_color)
+		content.move(rect.size.x - button_offset + 2, 0)
+		content.addch(content.ch2int('X'), bg_color, fg_color)
+		if child:
 			child.content.copy(content, 1, 1)
 
 func move(pos: Vector2i):
@@ -78,6 +98,7 @@ func resize(size: Vector2i):
 	rect.size = size
 	content.COLS = size.x + 1
 	content.LINES = size.y + 1
+	redraw = true
 	if child:
 		child.rect.size = rect.size - Vector2i(2, 2)
 
