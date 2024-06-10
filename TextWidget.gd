@@ -36,6 +36,7 @@ func set_rect(value: Rect2i) -> void:
 	if content:
 		content.COLS = value.size.x + 1
 		content.LINES = value.size.y + 1
+	redraw = true
 	rect = value
 
 func get_rect() -> Rect2i:
@@ -44,6 +45,7 @@ func get_rect() -> Rect2i:
 func set_content(value: TextBuffer) -> void:
 	value.COLS = rect.size.x + 1
 	value.LINES = rect.size.y + 1
+	redraw = true
 	content = value
 
 func get_content() -> TextBuffer:
