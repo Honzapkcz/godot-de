@@ -102,7 +102,7 @@ func resize(size: Vector2i):
 	if child:
 		child.rect.size = rect.size - Vector2i(2, 2)
 
-func on_mouse_up(button: int):
+func on_mouse_up(_button: int):
 	motion_state = MOTION_EVENT_NONE
 
 func on_mouse_down(button: int):
@@ -114,7 +114,7 @@ func on_mouse_down(button: int):
 		motion_origin = rect.size * 8
 	motion_delta = Vector2.ZERO
 
-func on_mouse_move(position: Vector2, delta: Vector2):
+func on_mouse_move(_position: Vector2, delta: Vector2):
 	motion_delta += delta
 	if motion_state == MOTION_EVENT_MOVE:
 		move(Vector2i(motion_origin + motion_delta) / 8)
