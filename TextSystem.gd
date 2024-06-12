@@ -59,6 +59,15 @@ var position_label: = TextLabel.new()
 # DEBUG #
 
 func _ready():
+	# Optimization Trickery #
+	var dummy: TextServer = TextServerManager.find_interface("Dummy")
+	if dummy:
+		TextServerManager.set_primary_interface(dummy)
+		for i in TextServerManager.get_interface_count():
+			var text_server: TextServer = TextServerManager.get_interface(i)
+			if text_server != dummy:
+				TextServerManager.remove_interface(text_server)
+	
 	DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_HIDDEN)
 	Engine.register_singleton(&"TextSystem", self)
 	term = TextWM.new(get_canvas_item())
