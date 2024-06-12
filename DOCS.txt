@@ -13,9 +13,9 @@
 * finished
 
 CORE:
- * TextBuffer
+ * TextBuffer (+ copyrect)
  * TextPanel
- ~ TextSystem
+ ~ TextSystem (! split code, - debug)
  * TextWidget
  * TextWM
  * TextWindow
@@ -28,10 +28,10 @@ PANEL:
  ? TextDigitalClock
  ? TextBinaryClock
 CONTROL:
- ? TextButton
+ ~ TextButton
  ? TextCheckBox
  ? TextMenuButton
- ! TextLabel
+ ! TextLabel (? )
  ? TextLineEdit
  ? TextFileEdit
  ? TextHSlider
@@ -47,7 +47,7 @@ CONTAINER:
  ? TextHBoxContainer
  ? TextVBoxContainer
  ? TextGridContainer
- ~ TextPositionContainer
+ ! TextPositionContainer (+ scroll, + cut)
  ? TextMarginContainer
  ? TextHSplitContainer
  ? TextVSplitContainer
