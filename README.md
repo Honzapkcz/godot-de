@@ -1,4 +1,4 @@
-
+```
  ┌─────────────────┐
  │   Honzapkcz's   │
  │┌─[ Window ]─_OX╖│
@@ -119,5 +119,4 @@ CONTAINER:
  |  ➀  | Null Character                   |
  |  ➁  | Non-Breakable Space Character    |
  +------+---------------------------------+
-
-
+```
