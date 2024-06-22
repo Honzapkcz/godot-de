@@ -16,5 +16,6 @@ func draw() -> void:
 	content.clear(0x00)
 	i = children.size() - 1
 	while i >= 0:
-		children[i].content.copy(content, children[i].rect.position.x, children[i].rect.position.y)
+		# I'm starting to get scared of cooking
+		children[i].content.copyrect(content, 0, 0, children[i].rect.position.x, children[i].rect.position.y, mini(rect.size.x - children[i].rect.position.x, children[i].rect.size.x), mini(rect.size.y - children[i].rect.position.y, children[i].rect.size.y))
 		i -= 1
