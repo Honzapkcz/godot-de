@@ -61,8 +61,7 @@ func _draw() -> void:
 	RenderingServer.canvas_item_add_texture_rect(canvas_item, Rect2(Vector2(Vector2i(mouse_position)), Vector2(8, 14)), cursor)
 
 func _process(_delta):
-	move(0, 0)
-	rect(0x00, COLS - 1, LINES - 1, 0, 0)
+	buffer.fill(0x00)
 	
 	j = len(bottoms) - 1
 	while j >= 0:
