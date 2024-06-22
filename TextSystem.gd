@@ -111,7 +111,7 @@ func _ready():
 	win.title = "GUI Go Brrr"
 	win.child = position_container
 	position_label.text = "Hello, I'm Label"
-	position_label.rect = Rect2i(1, 1, 10, 2)
+	position_label.rect = Rect2i(0, 0, 10, 2)
 	position_label.fg_color = 2
 	position_container.children.append(position_label)
 	term.windows.append(win)
