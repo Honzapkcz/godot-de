@@ -14,9 +14,9 @@
 * finished
 
 CORE:
- * TextBuffer (+ copyrect)
+ * TextBuffer
  * TextPanel
- ~ TextSystem (! split code, - debug)
+ ~ TextSystem (! split, - debug)
  * TextWidget
  * TextWM
  * TextWindow
@@ -32,7 +32,7 @@ CONTROL:
  ~ TextButton
  ? TextCheckBox
  ? TextMenuButton
- ! TextLabel (? )
+ ! TextLabel (? alignment)
  ? TextLineEdit
  ? TextFileEdit
  ? TextHSlider
@@ -48,7 +48,7 @@ CONTAINER:
  ? TextHBoxContainer
  ? TextVBoxContainer
  ? TextGridContainer
- ! TextPositionContainer (+ scroll, + cut)
+ ! TextPositionContainer (+ scroll)
  ? TextMarginContainer
  ? TextHSplitContainer
  ? TextVSplitContainer
