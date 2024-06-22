@@ -58,7 +58,11 @@ func copy(destbuf: TextBuffer, destx: int, desty: int) -> void:
 		i -= 1
 
 func copyrect(destbuf: TextBuffer, srcx: int, srcy: int, destx: int, desty: int, h: int, v: int) -> void:
-	pass
+	i = v * h * 2 - 1
+	while i >= 0:
+		# Someone cooked here even more
+		destbuf.buffer.set(desty * destbuf.COLS * 2 + destx * 2 + int(i / 2 / h) * (destbuf.COLS - h) * 2 + i, buffer[srcy * COLS * 2 + srcx * 2 + int(i / 2 / h) * (COLS - h) * 2 + i])
+		i -= 1
 
 func addch(ch: int, fg: int = -1, bg: int = -1) -> void:
 	fg = fg if fg >= 0 and fg < 16 else fgc
